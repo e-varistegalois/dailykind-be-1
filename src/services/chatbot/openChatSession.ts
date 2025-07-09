@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import Personality from '../../utils/chatbotPersonalityEnum';
-import instructions from '../../utils/chatbotPersonalityInstruction.json';
+import Personality from '../../config/chatbotPersonalityEnum';
+import instructions from '../../config/chatbotPersonalityInstruction.json';
 import {
   GoogleGenAI,
   HarmBlockThreshold,

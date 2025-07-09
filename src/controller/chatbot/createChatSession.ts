@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { openChatSession } from '../../services/chatbot/openChatSession';
 import chatbots from '../../repository/chatbot/activeChatbots';
-import Personality from "../../utils/chatbotPersonalityEnum";
+import Personality from "../../config/chatbotPersonalityEnum";
 
 
 export const createChatSession = (req: Request, res: Response) => {
