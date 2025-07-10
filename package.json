@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --watch src --exec tsx src/index.ts"
   },
   "prisma": {
     "schema": "src/db/schema.prisma"
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.12",
+    "nodemon": "^3.1.10",
     "prisma": "^6.11.1",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
