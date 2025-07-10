@@ -5,17 +5,23 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "schema": "src/db/schema.prisma"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "@google/genai": "^1.8.0",
+    "@prisma/client": "^6.11.1",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "mime": "^4.0.7"
   },
   "devDependencies": {
-    "@types/node": "^24.0.10",
-    "tsx": "^4.20.3"
+    "@types/node": "^24.0.12",
+    "prisma": "^6.11.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   }
 }
