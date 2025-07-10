@@ -11,12 +11,12 @@ export const createChatSession = (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    if (!Object.values(Personality).includes(personality)) {
+    if (!Object.keys(Personality).includes(personality)) {
         return res.status(400).json({ message: 'Invalid chatbot personality' });
     }
 
     try {
-        const chat = openChatSession(sessionId, personality, history);
+        const chat = openChatSession(sessionId, Personality[personality], history);
 
         chatbots.push(chat);
 
