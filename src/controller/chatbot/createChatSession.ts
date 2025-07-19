@@ -1,28 +1,74 @@
 import { Request, Response } from "express";
 import { openChatSession } from '../../services/chatbot/openChatSession';
-import chatbots from '../../repository/chatbot/activeChatbots';
+import chatbotRepository from '../../repository/chatbot/activeChatbots';
 import Personality from "../../config/chatbotPersonalityEnum";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
+export const createChatSession = async (req: Request, res: Response) => {
+    const { sessionId, userId, personality, history } = req.body;
 
-export const createChatSession = (req: Request, res: Response) => {
-    const { sessionId, personality, history } = req.body;
-
-    if (!sessionId || !personality || !history) {
-        return res.status(400).json({ message: 'Missing required fields' });
+    if (!sessionId || !userId || !personality || !history) {
+        return res.status(400).json({ 
+            message: 'Missing required fields: sessionId, userId, personality, history' 
+        });
     }
 
     if (!Object.keys(Personality).includes(personality)) {
-        return res.status(400).json({ message: 'Invalid chatbot personality' });
+        return res.status(400).json({ 
+            message: 'Invalid chatbot personality. Available: calm, cheerful, emo, humorous' 
+        });
     }
 
     try {
+        const existingSession = chatbotRepository.getSession(sessionId);
+        if (existingSession) {
+            return res.status(409).json({ 
+                message: 'Chat session already exists',
+                sessionId: sessionId
+            });
+        }
+
         const chat = openChatSession(sessionId, Personality[personality], history);
 
-        chatbots.push(chat);
+        if (typeof chat === 'string' && chat.startsWith('Error:')) {
+            return res.status(500).json({ 
+                message: 'Failed to create chat session',
+                error: chat 
+            });
+        }
 
-        res.status(200).json({ message: 'Chat session created successfully', chatbots_len: chatbots.length, chat });
+        if (typeof chat !== 'string') {
+            chatbotRepository.addSession(sessionId, userId, personality, chat);
+        }
 
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        // === SIMPAN KE DATABASE JIKA BELUM ADA ===
+        const dbSession = await prisma.chatSession.findUnique({
+            where: { id: sessionId }
+        });
+        if (!dbSession) {
+            await prisma.chatSession.create({
+                data: {
+                    id: sessionId,
+                    userId: userId,
+                    personality: personality,
+                    history: history
+                }
+            });
+        }
+
+        res.status(201).json({ 
+            message: 'Chat session created successfully',
+            sessionId: sessionId,
+            personality: personality,
+            activeSessions: chatbotRepository.getSessionCount()
+        });
+
+    } catch (error: any) {
+        console.error('Error creating chat session:', error);
+        res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 }
