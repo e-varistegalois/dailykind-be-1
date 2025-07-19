@@ -3,10 +3,13 @@ import { openChatSession } from '../../services/chatbot/openChatSession';
 import chatbotRepository from '../../repository/chatbot/activeChatbots';
 import Personality from "../../config/chatbotPersonalityEnum";
 import { PrismaClient } from '@prisma/client';
+import {v4 as uuidv4} from 'uuid';
 const prisma = new PrismaClient();
 
 export const createChatSession = async (req: Request, res: Response) => {
-    const { sessionId, userId, personality, history } = req.body;
+    const { userId, personality, history } = req.body;
+
+    const sessionId = uuidv4();
 
     if (!sessionId || !userId || !personality || !history) {
         return res.status(400).json({ 
