@@ -9,7 +9,6 @@ import {
 
 
 export const openChatSession = (
-    session_id: string,
     personality: Personality,
     history: Record<string, any>[],
 ) => {
