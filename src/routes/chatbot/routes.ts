@@ -9,7 +9,7 @@ router.post('/send-message', ChatbotController.sendMessage);
 
 // Comment out session routes temporarily to isolate the error
 router.get('/sessions/user/:userId', ChatbotController.getUserSessions);
-router.get('/sessions/session/:sessionId', ChatbotController.getSession);
+router.get('/sessions/session/:sessionId', ChatbotController.getSessionById);
 router.delete('/sessions/session/:sessionId', ChatbotController.deleteSession);
 
 export default router;

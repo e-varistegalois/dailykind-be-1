@@ -2,12 +2,12 @@ import { createChatSession } from './createChatSession';
 import { sendMessage } from './sendMessage';
 import { getUserSessions } from './getUserSessions';
 import { deleteSession } from './deleteSession';
-import { getSession } from './getSession';
+import { getSessionById } from './getSessionById';
 
 export const ChatbotController = {
     createChatSession,
     sendMessage,
     getUserSessions,
     deleteSession,
-    getSession
+    getSessionById
 };
