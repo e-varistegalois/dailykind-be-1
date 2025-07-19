@@ -32,7 +32,7 @@ export const createChatSession = async (req: Request, res: Response) => {
             });
         }
 
-        const chat = openChatSession(sessionId, Personality[personality], history);
+        const chat = openChatSession(Personality[personality], history);
 
         if (typeof chat === 'string' && chat.startsWith('Error:')) {
             return res.status(500).json({ 
