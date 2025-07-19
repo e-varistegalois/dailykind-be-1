@@ -1,6 +1,7 @@
 import express from "express";
 import 'dotenv/config';
 import chatbotRoutes from './routes/chatbot/routes';
+import uploadPostRouter from './routes/post/uploadPost.route';
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use('/post', uploadPostRouter);
 app.use('/chatbot', chatbotRoutes);
 
 // Health check endpoint
