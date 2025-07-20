@@ -20,3 +20,14 @@ export const createChallenge = async (content: string, timestamp: Date) => {
     },
   })
 }
+
+export const getActiveChallengeRepository = async () => {
+  return await prisma.challenge.findFirst({
+    where: {
+      isActive: true
+    },
+    orderBy: {
+      timestamp: 'desc' // Ambil yang terbaru jika ada beberapa active
+    }
+  })
+}
