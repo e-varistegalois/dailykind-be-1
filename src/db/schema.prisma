@@ -37,6 +37,7 @@ model Post {
   challengeId  String
   userId       String
   content      String
+  imageUrl     String?
   createdAt    DateTime @default(now())
   likes        Like[]   // relasi ke Like
   likesCount   Int      @default(0) // cache
