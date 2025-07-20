@@ -36,7 +36,7 @@ model Post {
   id           String   @id @default(cuid())
   challengeId  String
   userId       String
-  content      String
+  content      String?
   imageUrl     String?
   createdAt    DateTime @default(now())
   likes        Like[]   // relasi ke Like
