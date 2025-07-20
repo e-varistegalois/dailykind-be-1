@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import chatbotRepository from '../../repository/chatbot/activeChatbots';
-import { getHistory, deleteHistory } from '../../repository/chatbot/chatHistoryCache';
 import { PrismaClient } from '@prisma/client';
+import { deleteSessionService } from "../../services/chatbot/deleteSessionService";
 const prisma = new PrismaClient();
 
 export const deleteSession = async (req: Request, res: Response) => {
@@ -14,28 +14,12 @@ export const deleteSession = async (req: Request, res: Response) => {
     }
 
     try {
-        const session = chatbotRepository.getSession(sessionId);
-        if (!session) {
-            return res.status(404).json({ 
-                message: 'Chat session not found',
-                sessionId: sessionId
-            });
-        }
-
-        // Persist history from cache to DB
-        const history = getHistory(sessionId);
-        await prisma.chatSession.update({
-            where: { id: sessionId },
-            data: { history }
-        });
-
-        // Remove session from repository and cache
-        chatbotRepository.removeSession(sessionId);
-        deleteHistory(sessionId);
+        console.log(sessionId);
+        const deletedSession = await deleteSessionService(sessionId);
 
         res.status(200).json({
             message: 'Chat session deleted successfully and history persisted to DB',
-            sessionId: sessionId,
+            sessionId: deletedSession.data.session.id,
             activeSessions: chatbotRepository.getSessionCount()
         });
 
