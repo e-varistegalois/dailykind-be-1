@@ -44,7 +44,7 @@ export const openChatSession = (
             responseMimeType: 'text/plain',
             systemInstruction: [
                 {
-                    text: instructions[personality]['instruction'],
+                    text: instructions[personality as keyof typeof instructions]['instruction'],
                 }
             ],
         };

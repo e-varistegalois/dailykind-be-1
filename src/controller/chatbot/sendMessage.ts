@@ -33,7 +33,7 @@ export const sendMessage = async (req: Request, res: Response) => {
             // Buat ulang session di memory
             let chatHistory: Record<string, any>[] = Array.isArray(dbSession.history) ? dbSession.history as Record<string, any>[] : [];
             const chat = openChatSession(
-                Personality[dbSession.personality],
+                Personality[dbSession.personality as keyof typeof Personality],
                 chatHistory
             );
             if (typeof chat !== 'string') {

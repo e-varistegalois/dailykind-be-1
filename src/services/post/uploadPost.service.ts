@@ -9,7 +9,6 @@ export const handleUploadPost = async (req: Request) => {
   const { user_id, challenge_id, text } = req.body;
   const file = req.file;
 
-
   // validate challenge_id
   if (!challenge_id) {
     throw { status: 400, message: 'challenge_id is required' };
@@ -19,7 +18,6 @@ export const handleUploadPost = async (req: Request) => {
   if (!challenge) {
     throw { status: 404, message: 'Invalid challenge_id' };
   }
-
 
   if (!text && !file) {
     throw { status: 400, message: 'Text or image required' };
