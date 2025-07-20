@@ -2,7 +2,7 @@ import { Request } from 'express';
 import moderateText from './moderateText.service';
 import moderateImage from './moderateImage.service';
 import uploadToSupabase from './uploadToSupabase.service';
-// import { insertPost } from '../repository/post.repository'; // opsional DB
+// import { insertPost } from '../repositories/post.repositories'; // opsional DB
 
 export const handleUploadPost = async (req: Request) => {
   const { user_id, challenge_id, text } = req.body;

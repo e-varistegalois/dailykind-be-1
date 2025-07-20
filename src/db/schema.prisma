@@ -23,6 +23,15 @@ model ChatSession{
   @@map("chat_session")
 }
 
+model Challenge {
+  id         String   @id @default(cuid())
+  content    String
+  timestamp  DateTime
+  isActive   Boolean  @default(true)
+
+  posts      Post[]   // relasi ke Post
+}
+
 model Post {
   id           String   @id @default(cuid())
   challengeId  String
@@ -31,6 +40,10 @@ model Post {
   createdAt    DateTime @default(now())
   likes        Like[]   // relasi ke Like
   likesCount   Int      @default(0) // cache
+
+  challenge    Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([challengeId, userId]) // user hanya bisa post 1x per challenge
 }
 
 model Like {
