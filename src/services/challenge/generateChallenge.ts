@@ -1,6 +1,4 @@
 import 'dotenv/config';
-import Personality from '../../config/chatbotPersonalityEnum';
-import instructions from '../../config/chatbotPersonalityInstruction.json';
 import {
   GoogleGenAI,
   HarmBlockThreshold,
@@ -8,10 +6,7 @@ import {
 } from '@google/genai';
 
 
-export const openChatSession = (
-    personality: Personality,
-    history: Record<string, any>[],
-) => {
+export const generateChallenge = async () => {
     try {
         const ai = new GoogleGenAI({
             apiKey: process.env.GEMINI_API_KEY,
@@ -43,22 +38,24 @@ export const openChatSession = (
 
             responseMimeType: 'text/plain',
             systemInstruction: [
-                {
-                    text: instructions[personality]['instruction'],
-                }
+                {}
             ],
         };
         
         const model = 'gemini-2.5-flash';
-        const contents = history;
 
-        const chat = ai.chats.create({
+        const response = await ai.models.generateContent({
             model: model,
-            config: config,
-            history: contents,
+            contents: `Berikan satu challenge mingguan yang bisa dilakukan oleh user untuk menyebarkan kebaikan. Buatlah challenge tersebut dengan menggunakan bahasa Indonesia. Pastikan challenge tersebut mudah dipahami dan dapat dilakukan oleh kebanyakan orang
+            Berikan dengan format seperti ini:
+            Tantangan: ...
+            Penjelasan: ...`,
+            config: {
+                tools: [{codeExecution: {}}],
+            },
         });
         
-        return chat;
+        return response.text;
         
     } catch (err: any) {
         return "Error: " + err.message;

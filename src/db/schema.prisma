@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -22,4 +21,39 @@ model ChatSession{
   history       Json     @db.JsonB
 
   @@map("chat_session")
+}
+
+model Challenge {
+  id         String   @id @default(cuid())
+  content    String
+  timestamp  DateTime
+  isActive   Boolean  @default(true)
+
+  posts      Post[]   // relasi ke Post
+}
+
+model Post {
+  id           String   @id @default(cuid())
+  challengeId  String
+  userId       String
+  content      String?
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  likes        Like[]   // relasi ke Like
+  likesCount   Int      @default(0) // cache
+
+  challenge    Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([challengeId, userId]) // user hanya bisa post 1x per challenge
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id])
+  
+  @@unique([userId, postId]) // user hanya bisa like 1x untuk 1 post
 }
