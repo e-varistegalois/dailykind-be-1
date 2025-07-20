@@ -18,9 +18,16 @@ export const handleUploadPost = async (req: Request) => {
       if (!isTextSafe) {
         throw { status: 400, message: 'Caption flagged as inappropriate' };
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('MODERATE TEXT ERROR:', e);
-      throw { status: 400, message: 'Moderation service error' };
+      
+      // Jika error dari moderation (specific message), pass through
+      if (e.message?.includes('flagged as inappropriate')) {
+        throw { status: 400, message: e.message };
+      }
+      
+      // Jika error API/service lain
+      throw { status: 503, message: 'Text moderation service unavailable' };
     }
   }
 
@@ -30,13 +37,30 @@ export const handleUploadPost = async (req: Request) => {
       throw { status: 400, message: 'Invalid image format' };
     }
 
-    const safeBuffer = await moderateImage(file.buffer);
-    if (!safeBuffer) {
-      throw { status: 400, message: 'Image flagged as inappropriate' };
-    }
+    try {
+      const safeBuffer = await moderateImage(file.buffer);
+      if (!safeBuffer) {
+        throw { status: 400, message: 'Image flagged as inappropriate' };
+      }
 
-    const fileName = `posts/${user_id}_${challenge_id}_${Date.now()}.jpg`;
-    imageUrl = await uploadToSupabase(safeBuffer, fileName);
+      const fileName = `posts/${user_id}_${challenge_id}_${Date.now()}.jpg`;
+      imageUrl = await uploadToSupabase(safeBuffer, fileName);
+    } catch (e: any) {
+      console.error('IMAGE PROCESSING ERROR:', e);
+      
+      // Jika error moderation image
+      if (e.message?.includes('flagged as inappropriate')) {
+        throw { status: 400, message: e.message };
+      }
+      
+      // Jika error upload
+      if (e.message?.includes('Supabase upload failed')) {
+        throw { status: 500, message: 'Image upload failed. Please try again.' };
+      }
+      
+      // Error lain
+      throw { status: 503, message: 'Image processing service unavailable' };
+    }
   }
 
   // opsional: simpan ke DB
