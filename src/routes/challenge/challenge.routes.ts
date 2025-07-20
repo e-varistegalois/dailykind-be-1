@@ -1,9 +1,9 @@
 // routes/challengeRoutes.ts
 import { Router } from 'express'
-import { handleGenerateWeeklyChallenge } from '../../controller/challenge/challenge.controller'
+import { handleGetWeeklyChallenge } from '../../controller/challenge/challenge.controller'
 
 const router = Router()
 
-router.get('/', handleGenerateWeeklyChallenge)
+router.get('/', handleGetWeeklyChallenge)
 
 export default router
