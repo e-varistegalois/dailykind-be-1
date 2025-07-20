@@ -6,6 +6,12 @@ export const findChallengeByTimestamp = async (timestamp: Date) => {
   })
 }
 
+export const findChallengeById = async (id: string) => {
+  return prisma.challenge.findUnique({
+    where: { id },
+  });
+}
+
 export const createChallenge = async (content: string, timestamp: Date) => {
   return prisma.challenge.create({
     data: {
