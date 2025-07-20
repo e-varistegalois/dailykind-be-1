@@ -1,5 +1,5 @@
 import { createChallenge, findChallengeByTimestamp } from '../../repositories/challenge/challenge.repositories'
-import { getChallengeContentFromGemini } from '../../challenge/generateChallenge'
+import { generateChallenge } from './generateChallenge'
 
 export const generateWeeklyChallenge = async () => {
   const now = new Date()
@@ -13,9 +13,9 @@ export const generateWeeklyChallenge = async () => {
     return { created: false, message: 'Challenge minggu ini sudah ada' }
   }
 
-  const content = await getChallengeContentFromGemini()
+  const content = await generateChallenge() ?? ''
 
   const challenge = await createChallenge(content, monday9am)
 
-  return { created: true, challenge }
+  return { created: true, challenge: challenge }
 }

@@ -4,6 +4,6 @@ import { handleGenerateWeeklyChallenge } from '../../controller/challenge/challe
 
 const router = Router()
 
-router.post('/', handleGenerateWeeklyChallenge)
+router.get('/', handleGenerateWeeklyChallenge)
 
 export default router
