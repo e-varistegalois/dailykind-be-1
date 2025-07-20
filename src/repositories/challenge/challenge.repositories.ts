@@ -21,6 +21,14 @@ export const createChallenge = async (content: string, timestamp: Date) => {
   })
 }
 
+
+export const inactivateChallenge = async (id: string) => {
+  return prisma.challenge.update({
+    where: { id },
+    data: { isActive: false },
+  });
+}
+  
 export const getActiveChallengeRepository = async () => {
   return await prisma.challenge.findFirst({
     where: {
