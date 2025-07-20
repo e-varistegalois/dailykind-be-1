@@ -1,7 +1,7 @@
 import express from "express";
 import 'dotenv/config';
-import chatbotRoutes from './routes/chatbot/routes';
-import uploadPostRouter from './routes/post/uploadPost.route';
+import chatbotRoutes from './routes/chatbot/chatbot.routes';
+import uploadPostRouter from './routes/post/post.route';
 
 const app = express()
 const port = process.env.PORT || 3001

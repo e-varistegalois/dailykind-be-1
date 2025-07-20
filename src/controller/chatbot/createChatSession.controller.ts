@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSessionService } from "../../services/chatbot/createSessionService";
+import { createSessionService } from "../../services/chatbot/createSession.service";
 import chatbotRepository from '../../repository/chatbot/activeChatbots';
 import Personality from "../../config/chatbotPersonalityEnum";
 import { PrismaClient } from '@prisma/client';

@@ -22,3 +22,24 @@ model ChatSession{
 
   @@map("chat_session")
 }
+
+model Post {
+  id           String   @id @default(cuid())
+  challengeId  String
+  userId       String
+  content      String
+  createdAt    DateTime @default(now())
+  likes        Like[]   // relasi ke Like
+  likesCount   Int      @default(0) // cache
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id])
+  
+  @@unique([userId, postId]) // user hanya bisa like 1x untuk 1 post
+}

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import chatbotRepository from '../../repository/chatbot/activeChatbots';
 import { PrismaClient } from '@prisma/client';
-import { deleteSessionService } from "../../services/chatbot/deleteSessionService";
+import { deleteSessionService } from "../../services/chatbot/deleteSession.service";
 const prisma = new PrismaClient();
 
 export const deleteSession = async (req: Request, res: Response) => {
