@@ -11,7 +11,7 @@ export const createSessionService = async (
     try {
         const sessionId = uuidv4();
 
-        const chat = openChatSession(Personality[personality], []);
+        const chat = openChatSession(Personality[personality as keyof typeof Personality], []); 
 
         if (typeof chat === 'string') {
             throw new Error("Failed to create chat session");

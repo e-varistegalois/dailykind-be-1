@@ -59,7 +59,7 @@ export default async function moderateText(text: string): Promise<boolean> {
 
     return isTextSafe;
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Perspective API error:', error);
     return error.response?.status === 429 ? false : true; // Reject jika quota exceeded
   }
