@@ -2,16 +2,31 @@ import { Request } from 'express';
 import moderateText from './moderateText.service';
 import moderateImage from './moderateImage.service';
 import uploadToSupabase from './uploadToSupabase.service';
-// import { insertPost } from '../repositories/post.repositories'; // opsional DB
+import { getChallengeByIdService } from '../challenge/getChallengeById.service';
+import { createPost } from '../../repositories/post/post.repositories';
 
 export const handleUploadPost = async (req: Request) => {
   const { user_id, challenge_id, text } = req.body;
   const file = req.file;
 
+
+  // validate challenge_id
+  if (!challenge_id) {
+    throw { status: 400, message: 'challenge_id is required' };
+  }
+  const challenge = (await getChallengeByIdService(challenge_id)).challenge;
+  console.log("challenge wakakak: ", challenge);
+  if (!challenge) {
+    throw { status: 404, message: 'Invalid challenge_id' };
+  }
+
+
   if (!text && !file) {
     throw { status: 400, message: 'Text or image required' };
   }
 
+
+  // check text
   if (text) {
     try {
       const isTextSafe = await moderateText(text);
@@ -31,6 +46,8 @@ export const handleUploadPost = async (req: Request) => {
     }
   }
 
+
+  // check image
   let imageUrl: string | null = null;
   if (file) {
     if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
@@ -63,12 +80,12 @@ export const handleUploadPost = async (req: Request) => {
     }
   }
 
-  // opsional: simpan ke DB
-  // await insertPost({ user_id, challenge_id, text: text || null, image_url: imageUrl });
+  // simpan ke DB
+  const createdPost = await createPost({ user_id, challenge_id, text: text || undefined, image_url: imageUrl || undefined });
 
   return {
     message: 'Post uploaded successfully',
-    image_url: imageUrl,
-    text,
+    image_url: createdPost.imageUrl,
+    text: createdPost.content,
   };
 };
