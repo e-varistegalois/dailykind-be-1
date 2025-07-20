@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { prisma } from '../../db/index';
-import { getHistory, deleteHistory } from '../../repository/chatbot/chatHistoryCache';
-import chatbotRepository from '../../repository/chatbot/activeChatbots';
+import { getHistory, deleteHistory } from '../../repositories/chatbot/chatHistoryCache';
+import chatbotRepository from '../../repositories/chatbot/activeChatbots';
 
 export const deleteSessionService = async (
     sessionId: string

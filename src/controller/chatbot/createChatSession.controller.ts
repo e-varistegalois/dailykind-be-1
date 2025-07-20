@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createSessionService } from "../../services/chatbot/createSession.service";
-import chatbotRepository from '../../repository/chatbot/activeChatbots';
+import chatbotRepository from '../../repositories/chatbot/activeChatbots';
 import Personality from "../../config/chatbotPersonalityEnum";
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();

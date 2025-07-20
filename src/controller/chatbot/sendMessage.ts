@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { sendMessageService } from '../../services/chatbot/sendMessageService';
-import chatbotRepository from '../../repository/chatbot/activeChatbots';
-import { appendMessage, getHistory } from '../../repository/chatbot/chatHistoryCache';
+import chatbotRepository from '../../repositories/chatbot/activeChatbots';
+import { appendMessage, getHistory } from '../../repositories/chatbot/chatHistoryCache';
 import { PrismaClient } from '@prisma/client';
 import Personality from '../../config/chatbotPersonalityEnum';
 import { openChatSession } from '../../services/chatbot/openChatSession';

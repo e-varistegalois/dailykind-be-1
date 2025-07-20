@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import chatbotRepository from '../../repository/chatbot/activeChatbots';
+import chatbotRepository from '../../repositories/chatbot/activeChatbots';
 import { PrismaClient } from '@prisma/client';
-import { getHistory } from '../../repository/chatbot/chatHistoryCache';
+import { getHistory } from '../../repositories/chatbot/chatHistoryCache';
 const prisma = new PrismaClient();
 
 export const getSessionById = async (req: Request, res: Response) => {

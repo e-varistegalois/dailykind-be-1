@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import chatbotRepository from '../../repository/chatbot/activeChatbots';
+import chatbotRepository from '../../repositories/chatbot/activeChatbots';
 import { PrismaClient } from '@prisma/client';
 import { deleteSessionService } from "../../services/chatbot/deleteSession.service";
 const prisma = new PrismaClient();
