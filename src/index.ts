@@ -1,5 +1,6 @@
 import express from "express";
 import 'dotenv/config';
+import './config/scheduler';
 import chatbotRoutes from './routes/chatbot/chatbot.routes';
 import postRouter from './routes/post/post.route';
 import challengeRoutes from './routes/challenge/challenge.routes';
@@ -73,4 +74,5 @@ app.listen(port, () => {
     console.log(`Dailykind backend server running on port ${port}`);
     console.log(`📅 Started at: ${new Date().toISOString()}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`⏰ Weekly challenge scheduler active - runs every Monday at 09:00 WIB`); 
 });
