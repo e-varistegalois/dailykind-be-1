@@ -1,7 +1,7 @@
 import express from "express";
 import 'dotenv/config';
 import chatbotRoutes from './routes/chatbot/chatbot.routes';
-import uploadPostRouter from './routes/post/post.route';
+import postRouter from './routes/post/post.route';
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/post', uploadPostRouter);
+app.use('/post', postRouter);
 app.use('/chatbot', chatbotRoutes);
 
 // Health check endpoint
@@ -67,7 +67,7 @@ app.use((error: any, req: express.Request, res: express.Response, next: express.
 });
 
 app.listen(port, () => {
-    console.log(`🚀 Dailykind backend server running on port ${port}`);
+    console.log(`Dailykind backend server running on port ${port}`);
     console.log(`📅 Started at: ${new Date().toISOString()}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

@@ -19,6 +19,11 @@ export const deleteSessionService = async (
             // Remove session from repository and cache
             chatbotRepository.removeSession(sessionId);
             deleteHistory(sessionId);
+            return {
+                data: {
+                    session: { id: sessionId, status: 'session cleaned up from cache' }
+                }
+            };
         }
         
         // delete from db
