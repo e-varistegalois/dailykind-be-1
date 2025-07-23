@@ -2,8 +2,9 @@ import express from "express";
 import 'dotenv/config';
 import './config/scheduler';
 import chatbotRoutes from './routes/chatbot/chatbot.routes';
-import postRouter from './routes/post/post.route';
+import postRouter from './routes/post/post.routes';
 import challengeRoutes from './routes/challenge/challenge.routes';
+import userRoutes from './routes/user/user.routes';
 
 
 const app = express()
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 app.use('/post', postRouter);
 app.use('/chatbot', chatbotRoutes);
 app.use('/challenge', challengeRoutes);
+app.use('/user', userRoutes);
 
 // Health check endpoint
 app.get('/', (_, res) => {
