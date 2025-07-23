@@ -1,11 +1,6 @@
 import { deactivateChallengeById, findChallengeByTimeRange } from '../../repositories/challenge/challenge.repositories'
 
 export const deactivateLastWeeksChallengeService = async () => {
-    // Dapatkan tanggal minggu lalu
-    // const now = new Date();
-    // const lastWeek = new Date(now);
-    // lastWeek.setDate(now.getDate() - 7);
-
     const now = new Date();
     const dayOfWeek = now.getDay(); // Minggu = 0, Senin = 1, dst
     const daysSinceMonday = (dayOfWeek + 6) % 7; // Senin = 0, Selasa = 1, ..., Minggu = 6
