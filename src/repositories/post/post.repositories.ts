@@ -1,4 +1,5 @@
 import { prisma } from '../../db/index';
+import { PostSortBy } from '../../config/postSortBy';
 
 export const createPost = async (data: {
   user_id: string;
@@ -15,3 +16,20 @@ export const createPost = async (data: {
     },
   });
 };
+
+export const getPostsByChallengeId = async (
+  challengeId: string, 
+  sortBy: PostSortBy = 'createdAt',
+  skip: number = 0,
+  take: number = 20
+) => {
+  return prisma.post.findMany({
+    where: { challengeId },
+    orderBy:
+      sortBy === 'likes'
+        ? { likesCount: 'desc' }
+        : { createdAt: 'desc' },
+    skip: skip,
+    take: take
+  });
+}
