@@ -33,3 +33,21 @@ export const getPostsByChallengeId = async (
     take: take
   });
 }
+
+export const getPostsByUserIdRepository = async (userId: string) => {
+  return await prisma.post.findMany({
+    where: {
+      userId: userId
+    },
+    include: {
+      _count: {
+        select: {
+          likes: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: 'desc' 
+    }
+  });
+};
