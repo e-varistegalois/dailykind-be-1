@@ -6,6 +6,7 @@ export const createPost = async (data: {
   challenge_id: string;
   text?: string ;
   image_url?: string;
+  status: 'DRAFT' | 'PUBLISHED';
 }) => {
   return prisma.post.create({
     data: {
@@ -13,6 +14,7 @@ export const createPost = async (data: {
       challengeId: data.challenge_id,
       content: data.text,
       imageUrl: data.image_url,
+      status: data.status,
     },
   });
 };
@@ -24,7 +26,7 @@ export const getPostsByChallengeId = async (
   take: number = 20
 ) => {
   return prisma.post.findMany({
-    where: { challengeId },
+    where: { challengeId, status: 'PUBLISHED'},
     orderBy:
       sortBy === 'likes'
         ? { likesCount: 'desc' }
@@ -52,4 +54,26 @@ export const getPostsByUserIdRepository = async (userId: string) => {
   });
 };
 
-
+export const getUserDraftsRepository = async (userId: string) => {
+  return await prisma.post.findMany({
+    where: {
+      userId,
+      status: 'DRAFT',
+      challenge: {
+        isActive: true 
+      }
+    },
+    include: {
+      challenge: {
+        select: {
+          content: true,
+          timestamp: true,
+          isActive: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+};
