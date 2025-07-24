@@ -18,6 +18,7 @@ export const openChatSession = (
         });
 
         const config = {
+            maxOutputTokens: 1000,
             temperature: 1,
             thinkingConfig: {
                 thinkingBudget: 0,
