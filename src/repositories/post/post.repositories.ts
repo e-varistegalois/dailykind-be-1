@@ -36,6 +36,42 @@ export const getPostsByChallengeId = async (
   });
 }
 
+export const getPostsByChallengeIdWithLikes = async (
+  challengeId: string,
+  userId: string,
+  sortBy: PostSortBy = 'createdAt',
+  skip: number = 0,
+  take: number = 20
+) => {
+  return prisma.post.findMany({
+    where: { 
+      challengeId, 
+      status: 'PUBLISHED'
+    },
+    include: {
+      likes: {
+        where: {
+          userId: userId
+        },
+        select: {
+          userId: true
+        }
+      },
+      _count: {
+        select: {
+          likes: true
+        }
+      }
+    },
+    orderBy:
+      sortBy === 'likes'
+        ? { likesCount: 'desc' }
+        : { createdAt: 'desc' },
+    skip: skip,
+    take: take
+  });
+};
+
 export const getPostsByUserIdRepository = async (userId: string) => {
   return await prisma.post.findMany({
     where: {
